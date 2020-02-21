@@ -13,18 +13,6 @@ defmodule Sneakers23.Inventory.Inventory do
     %__MODULE__{}
   end
 
-  def mark_product_released!(id), do: mark_product_released!(id, [])
-
-  def mark_product_released!(product_id, opts) do
-    pid = Keyword.get(opts, :pid, __MODULE__)
-    %{id: id} = Store.mark_product_released!(product_id)
-    {:ok, inventory} = Server.mark_product_released!(pid, id)
-    {:ok, product} = CompleteProduct.get_product_by_id(inventory, id)
-    Sneakers23Web.notify_product_released(product)
-
-    :ok
-  end
-
   def add_products(state = %{products: products}, to_add) do
     new_products =
       Enum.reduce(to_add, products, fn product, products ->
