@@ -25,17 +25,8 @@ function setupProductChannel(socket, productId) {
   productChannel.on('released', ({ size_html }) => {
     dom.replaceProductComingSoon(productId, size_html)
   })
-}
 
-function replaceProductComingSoon(productId, sizeHtml) {
-  const name = `.product-soon-${productId}`
-  const productSoonEls = document.querySelectorAll(name)
-
-  productSoonEls.forEach((el) => {
-    const fragment = document.createRange()
-                       .createContextualFragment(sizeHtml)
-    el.replaceWith(fragment)
+  productChannel.on('stock_change', ({ product_id, item_id, level }) => {
+    dom.updateItemLevel(item_id, level)
   })
 }
-
-dom.replaceProductComingSoon = replaceProductComingSoon
