@@ -54,6 +54,7 @@ defmodule Sneakers23.Inventory do
 
     avail = Store.fetch_availability_for_item(item_id)
     {:ok, old_inv, inv} = Server.set_item_availability(pid, avail)
+    {:ok, item} = CompleteProduct.get_item_by_id(inv, item_id)
 
     unless being_replicated? do
       Replication.item_sold!(item_id)
@@ -65,6 +66,8 @@ defmodule Sneakers23.Inventory do
         current_item: item
       )
     end
+
+    Sneakers23Web.notify_local_item_stock_change(item)
 
     :ok
   end

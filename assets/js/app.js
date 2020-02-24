@@ -6,6 +6,7 @@
  * We make no guarantees that this code is fit for any purpose.
  * Visit http://www.pragmaticprogrammer.com/titles/sbsockets for more book information.
 ***/
+import css from "../css/app.css"
 import { productSocket } from "./socket"
 import dom from './dom'
 import Cart from './cart'
@@ -37,3 +38,11 @@ function setupProductChannel(socket, productId) {
     dom.updateItemLevel(item_id, level)
   })
 }
+
+dom.onItemClick((itemId) => {
+  Cart.addCartItem(cartChannel, itemId)
+})
+
+dom.onItemRemoveClick((itemId) => {
+  Cart.removeCartItem(cartChannel, itemId)
+})
