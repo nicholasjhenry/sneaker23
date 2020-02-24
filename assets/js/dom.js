@@ -38,4 +38,10 @@ function removeStockLevelClasses(el) {
     forEach((name) => el.classList.remove(name))
 }
 
+import { getCartHtml } from './cartRenderer'
+  dom.renderCartHtml = (cart) => {
+  const cartContainer = document.getElementById("cart-container")
+  cartContainer.innerHTML = getCartHtml(cart)
+}
+
 export default dom

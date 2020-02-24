@@ -8,12 +8,19 @@
 ***/
 import { productSocket } from "./socket"
 import dom from './dom'
+import Cart from './cart'
+
+productSocket.connect()
 
 const productIds = dom.getProductIds()
-if (productIds.length > 0) {
-  productSocket.connect()
-  productIds.forEach((id) => setupProductChannel(productSocket, id))
-}
+
+productIds.forEach((id) => setupProductChannel(productSocket, id))
+
+const cartChannel = Cart.setupCartChannel(productSocket, window.cartId, {
+  onCartChange: (newCart) => {
+    dom.renderCartHtml(newCart)
+  }
+})
 
 function setupProductChannel(socket, productId) {
   const productChannel = socket.channel(`product:${productId}`)
